@@ -22,21 +22,21 @@ def do_deploy(archive_path):
         # filename without extension> on the web server
         file = archive_path.split('/')[-1]
         folder = '/data/web_static/releases/' + file.split('.')[0]
-        run('mkdir -p {}'.format(folder))
-        run('tar -xzf /tmp/{} -C {}'.format(file, folder))
+        run('sudo mkdir -p {}'.format(folder))
+        run('sudo tar -xzf /tmp/{} -C {}'.format(file, folder))
 
         # deletes the archive from the web server
-        run('rm /tmp/{}'.format(file))
+        run('sudo rm /tmp/{}'.format(file))
 
         # moves the content of the uncompressed folder to the proper location
-        run('mv {}/web_static/* {}/'.format(folder, folder))
-        run('rm -rf {}/web_static'.format(folder))
+        run('sudo mv {}/web_static/* {}/'.format(folder, folder))
+        run('sudo rm -rf {}/web_static'.format(folder))
 
         # delets the symbolic link /data/web_static/current from webserver
-        run('rm -rf /data/web_static/current')
+        run('sudo rm -rf /data/web_static/current')
 
         # creates a new symbolic link /data/web_static/current on webserver
-        run('ln -s {} /data/web_static/current'.format(folder))
+        run('sudo ln -s {} /data/web_static/current'.format(folder))
         return True
 
     except Exception as e:
